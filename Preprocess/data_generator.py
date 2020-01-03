@@ -1,6 +1,5 @@
 from captcha.image import ImageCaptcha
 import random
-import sys
 import os
 
 nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -26,7 +25,7 @@ class DataGenerator:
         self.test_size = int(size*0.25)
         print(f"Train Folder -> {self.train_folder}\tExpected Images: {self.train_size}")
         print(f"Test  Folder -> {self.test_folder}\tExpected Images:{self.test_size}")
-
+        print()
     
     def build_charSet(self, clear_path=False):
         """
@@ -45,13 +44,14 @@ class DataGenerator:
                 os.system("rm " + self.test_folder + "/*.jpg")
                 print("All Images in Test  Folder have been Removed")           
 
-        print("PATH Exist! Begin to Build Char Dataset...")
+        print()
+
         self.__generate_charIMG(self.train_size, self.train_folder)
         print("Train Set Generate Complete!")
         self.__generate_charIMG(self.test_size,self.test_folder)
         print("Test  Set Generate Complete!")
 
-    def build_captcharSet(self, clear_path=True):
+    def build_captchaSet(self, clear_path=True):
         """
             clear_path<bool> -> If to rm all the images in the folder before generate?
         """
@@ -113,8 +113,8 @@ class DataGenerator:
     def __generate_captchaIMG(self, size, path):
         unique = 0
         for _ in range(size):
-            imc = ImageCaptcha(lambda x: int(100 + 40 * random.random()),
-                                lambda x: int(45 + 20 * random.random()),
+            imc = ImageCaptcha((lambda x: x*int(100 + 40 * random.random()))(1),
+                                (lambda x: x*int(45 + 20 * random.random()))(1),
                                 font_sizes=list(range(35,45)))
             name = self.__generate_string()
             image = imc.generate_image(name)
