@@ -22,49 +22,27 @@ class DataGenerator:
         self.train_folder = os.path.join(root_folder + "/train/")
         self.test_folder = os.path.join(root_folder + "/test/")
         self.train_size = size
-        self.test_size = int(size*0.25)
+        self.test_size = int(size*test_ratio)
         print(f"Train Folder -> {self.train_folder}\tExpected Images: {self.train_size}")
-        print(f"Test  Folder -> {self.test_folder}\tExpected Images:{self.test_size}")
+        print(f"Test  Folder -> {self.test_folder}\tExpected Images: {self.test_size}")
         print()
     
-    def build_charSet(self, clear_path=False):
-        """
-            clear_path<bool> -> If to rm all the images in the folder before generate?
-        """
+    def build_charSet(self):
         if not os.path.exists(self.train_folder):
-            os.makedirs(self.train_folder)
-        else:
-            if clear_path:
-                os.system("rm " + self.train_folder + "/*.jpg")
-                print("All Images in Train Folder have been Removed")           
+            os.makedirs(self.train_folder)        
         if not os.path.exists(self.test_folder):
-            os.makedirs(self.test_folder)
-        else:
-            if clear_path:
-                os.system("rm " + self.test_folder + "/*.jpg")
-                print("All Images in Test  Folder have been Removed")           
-
-        print()
+            os.makedirs(self.test_folder)        
 
         self.__generate_charIMG(self.train_size, self.train_folder)
         print("Train Set Generate Complete!")
         self.__generate_charIMG(self.test_size,self.test_folder)
         print("Test  Set Generate Complete!")
 
-    def build_captchaSet(self, clear_path=True):
-        """
-            clear_path<bool> -> If to rm all the images in the folder before generate?
-        """
+    def build_captchaSet(self):
         if not os.path.exists(self.train_folder):
             os.makedirs(self.train_folder)
-        else:
-            if clear_path:
-                os.system("rm " + self.train_folder + "/*")           
         if not os.path.exists(self.test_folder):
             os.makedirs(self.test_folder)
-        else:
-            if clear_path:
-                os.system("rm " + self.test_folder + "/*")
 
         print("PATH Exist! Begin to Build Captcha Dataset...")
         self.__generate_captchaIMG(self.train_size, self.train_folder)
